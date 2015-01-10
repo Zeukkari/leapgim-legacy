@@ -1,0 +1,83 @@
+.section {
+    top: 0;
+    width: 100%;
+    z-index: 999;
+    background-color: #111111;
+    color: #ccc;
+    border-top: solid 3px #1E97E3;
+    height: 50px;
+}
+
+.menuitem {
+    margin-top: 12px;
+    display: inline-block;
+    width: 100px;
+}
+
+.menulink {
+    height: 40px;
+    padding: 7px;
+    border-bottom: 3px solid transparent;
+}
+
+    .menulink:hover {
+        border-bottom: 3px solid #1E97E3;
+        text-decoration: none;
+        color: #1E97E3;
+    }
+
+.footer {
+    margin-top: 12px;
+}
+
+.liitem {
+    height: 65px;
+}
+
+.skillLine {
+    display: inline-block;
+    width: 100%;
+    min-height: 90px;
+    padding: 3px 4px;
+}
+
+skillLineDefault {
+    padding: 3px 4px;
+}
+
+div.skill {
+    background: #F58723;
+    border-radius: 3px;
+    color: white;
+    font-weight: bold;
+    padding: 3px 4px;
+    width: 70px;
+}
+
+.rating {
+    margin-left: 30px;
+}
+
+.footerQR {
+    margin-left: 30%;
+}
+
+.leftText {
+    font-size: 41px;
+}
+
+.rightText {
+    font-size: 41px;
+    background: #F58723;
+    border-radius: 3px;
+    color: white;
+    padding: 3px 4px;
+}
+.visualizer {
+    width : 100%;
+    height : 100%;  
+}
+textarea {
+    width : 100%;
+    height : 100%;
+}
