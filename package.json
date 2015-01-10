@@ -1,0 +1,22 @@
+{
+  "name": "leapgim",
+  "version": "0.0.0",
+  "description": "Leap Motion Gesture Input Mapper",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Timo Aho",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "leapjs": "0.6.4",
+    "express": "4.10.7",
+    "socket.io": "1.2.1",
+    "socket.io-client": "1.2.1",
+    "java" : "0.4.4"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "leap"
+  ]
+}
