@@ -1,0 +1,454 @@
+{
+  "loopInterval" : 10,
+  "keyDownTime" : 200,
+  "player" : "mpg123",
+  "pointer" : {
+    "hand" : "rightHand",
+    "focusPoint" : "indexFinger",
+    "minConfidence" : 0,
+    "handOffsets" : 0,
+    "useFixedOrigin" : 0
+  },
+  "actions" : {
+    "smoothMove":{
+      "priority" : 9,
+      "continuous" : 1,
+       "pointer" : {
+        "hand" : "rightHand",
+        "focusPoint" : "palm",
+        "minConfidence" : 0.25,
+        "handOffsets" : 1,
+        "useFixedOrigin" : 0
+      },
+      "action":{
+        "type":"focusMove",
+        "sensitivity" : 0.5
+      },
+      "frameData":{
+        "rightHand":{
+          "grabStrength" : {
+            "max" : 0.25
+          }
+        }
+      }
+    },
+    "mouse1Click":{
+      "priority" : 5,
+      "blocking" : 1,
+      "action":{
+        "type":"mouseClick",
+        "inputEvent":"MOUSE1",
+        "audioReply" : "mouseclick1.mp3",
+        "sleepAfter" : 300
+      },
+      "stepArray" : [
+        {
+          "frameData" : {
+            "rightHand" : {
+              "grabStrength" : {
+                "min" : 0.6
+              },
+              "palmVelocity" : {
+                "y" : {
+                  "min" : 0
+                },
+                "z" : {
+                  "min" : 0
+                }
+              }
+            }
+          },
+          "timeout" : 200
+        },
+        {
+          "frameData" : {
+            "rightHand" : {
+              "grabStrength" : {
+                "min" : 0.6
+              },
+              "palmVelocity" : {
+                "y" : {
+                  "max" : -300
+                }
+              }
+            }
+          }
+        }   
+      ]
+    },
+    "mouse1Hold":{
+      "priority" : 7,
+      "action":{
+        "type":"mouseDown",
+        "inputEvent":"MOUSE1",
+        "audioReply" : "mouseclick1.mp3"
+      },
+      "tearDownAction":{
+        "type":"mouseUp",
+        "inputEvent":"MOUSE1",
+        "audioReply" : "mouseclick1.mp3"
+      },
+      "frameData":{
+        "rightHand":{
+          "pinchFinger" : "indexFinger",
+          "pinchStrength" : {
+            "min" : 0.9
+          },
+          "grabStrength" : {
+            "max" : 0.9
+          }
+        }
+      }
+    },
+    "mouse2Hold":{
+      "priority" : 7,
+      "blocking" : 0,
+      "action":{
+        "type":"mouseDown",
+        "inputEvent":"MOUSE2",
+        "audioReply" : "mouseclick1.mp3"
+      },
+      "tearDownAction":{
+        "type":"mouseUp",
+        "inputEvent":"MOUSE2",
+        "audioReply" : "mouseclick1.mp3"
+      },
+      "frameData":{
+        "rightHand":{
+          "pinchFinger" : "ringFinger",
+          "pinchStrength" : {
+            "min" : 0.7
+          }
+        }
+      }
+    },
+    "mouseLock" : {
+      "priority" : 8,
+      "blocking" : 1,
+      "continuous" : 1,
+      "action" : {
+        "type" : "actionlist",
+        "list" : []
+      },
+      "frameData" : {
+        "rightHand" : {
+          "grabStrength" : {
+            "min" : 0.4
+          }
+        }
+      }
+    },
+    "mouseLock2" : {
+      "priority" : 6,
+      "blocking" : 1,
+      "continuous" : 1,
+      "action" : {
+        "type" : "actionlist",
+        "list" : []
+      },
+      "frameData" : {
+        "rightHand" : {
+          "grabStrength" : {
+            "min" : 0.4
+          },
+          "palmDirection" : "down"
+        }
+      }
+    },
+    "showWorkspaceSwitcher" : {
+      "priority" : 1,
+      "action" : {
+        "type" : "actionlist",
+        "sleepAfter" : 500,
+        "list" : [
+          {
+            "type":"keyDown",
+            "inputEvent":"VK_META"
+          },
+          {
+            "type":"keyPress",
+            "inputEvent":"VK_S"
+          },
+          {
+            "type":"keyUp",
+            "inputEvent":"VK_META"
+          }
+
+        ]
+      },
+      "frameData" : {
+        "leftHand" : {
+          "indexFinger" : 1,
+          "middleFinger":1,
+          "pinky" : 0,
+          "ringFinger" : 0,
+          "palmDirection" : "down"
+        },
+        "swipe" : {
+          "direction" : "up"
+        }
+      },
+      "time" : 50,
+      "timeout" : 50
+    },
+    "mouseWheelUp" : {
+      "priority" : 2,
+      "blocking" : 1,
+      "action" : {
+        "type" : "mouseWheel",
+        "sleepAfter" : 300,
+        "wheelAmt" : 3
+      },
+      "frameData" : {
+        "rightHand" : {
+          "indexFinger" : 1,
+          "middleFinger" : 0,
+          "pinky" : 0,
+          "ringFinger" : 0,
+          "pointer" : "palm",
+          "minTouchDistance" : 0.75
+        },
+        "circle" : {
+          "direction" : "forward",
+          "progress" : {
+            "min" : 1.5
+          }
+        }
+      },
+      "time" : 100,
+      "timeout" : 100
+    },
+    "mouseWheelDown" : {
+      "priority" : 2,
+      "blocking" : 1,
+      "action" : {
+        "type" : "mouseWheel",
+        "sleepAfter" : 300,
+        "wheelAmt" : -3
+      },
+      "frameData" : {
+        "rightHand" : {
+          "indexFinger" : 1,
+          "middleFinger" : 0,
+          "pinky" : 0,
+          "ringFinger" : 0,
+          "pointer" : "palm",
+          "minTouchDistance" : 0.75
+        },
+        "circle" : {
+          "direction" : "backward",
+          "progress" : {
+            "min" : 1.5
+          }
+        }
+      },
+      "time" : 100,
+      "timeout" : 100
+    },
+    "desktopRight" : {
+      "priority" : 1,
+      "action" : {
+        "type" : "actionlist",
+        "sleepAfter" : 500,
+        "list" : [
+          {
+            "type":"keyDown",
+            "inputEvent":"VK_CONTROL"
+          },
+          {
+            "type":"keyDown",
+            "inputEvent":"VK_ALT"
+          },
+          {
+            "type":"keyPress",
+            "inputEvent":"VK_RIGHT"
+          },
+          {
+            "type":"keyUp",
+            "inputEvent":"VK_CONTROL"
+          },
+          {
+            "type":"keyUp",
+            "inputEvent":"VK_ALT"
+          }
+
+        ]
+      },
+      "frameData" : {
+        "leftHand" : {
+          "indexFinger":1,
+          "middleFinger":0,
+          "pinky" : 0,
+          "ringFinger" : 0
+        },
+        "swipe" : {
+          "direction" : "right"
+        }
+      }
+    },
+    "desktopLeft" : {
+      "priority" : 1,
+      "action" : {
+        "type" : "actionlist",
+        "sleepAfter" : 500,
+        "list" : [
+          {
+            "type":"keyDown",
+            "inputEvent":"VK_CONTROL"
+          },
+          {
+            "type":"keyDown",
+            "inputEvent":"VK_ALT"
+          },
+          {
+            "type":"keyPress",
+            "inputEvent":"VK_LEFT"
+          },
+          {
+            "type":"keyUp",
+            "inputEvent":"VK_CONTROL"
+          },
+          {
+            "type":"keyUp",
+            "inputEvent":"VK_ALT"
+          }
+
+        ]
+      },
+      "frameData" : {
+        "leftHand" : {
+          "indexFinger":1,
+          "middleFinger":0,
+          "pinky" : 0,
+          "ringFinger" : 0
+        },
+        "swipe" : {
+          "direction" : "left"
+        }
+      }
+    },
+    "desktopUp" : {
+      "priority" : 1,
+      "action" : {
+        "type" : "actionlist",
+        "sleepAfter" : 500,
+        "list" : [
+          {
+            "type":"keyDown",
+            "inputEvent":"VK_CONTROL"
+          },
+          {
+            "type":"keyDown",
+            "inputEvent":"VK_ALT"
+          },
+          {
+            "type":"keyPress",
+            "inputEvent":"VK_UP"
+          },
+          {
+            "type":"keyUp",
+            "inputEvent":"VK_CONTROL"
+          },
+          {
+            "type":"keyUp",
+            "inputEvent":"VK_ALT"
+          }
+
+        ]
+      },
+      "frameData" : {
+        "leftHand" : {
+          "indexFinger":1,
+          "middleFinger":0,
+          "pinky" : 0,
+          "ringFinger" : 0
+        },
+        "swipe" : {
+          "direction" : "up"
+        }
+      }
+    },
+    "desktopDown" : {
+      "priority" : 1,
+      "action" : {
+        "type" : "actionlist",
+        "sleepAfter" : 500,
+        "list" : [
+          {
+            "type":"keyDown",
+            "inputEvent":"VK_CONTROL"
+          },
+          {
+            "type":"keyDown",
+            "inputEvent":"VK_ALT"
+          },
+          {
+            "type":"keyPress",
+            "inputEvent":"VK_DOWN"
+          },
+          {
+            "type":"keyUp",
+            "inputEvent":"VK_CONTROL"
+          },
+          {
+            "type":"keyUp",
+            "inputEvent":"VK_ALT"
+          }
+        ]
+      },
+      "frameData" : {
+        "leftHand" : {
+          "indexFinger":1,
+          "middleFinger":0,
+          "pinky" : 0,
+          "ringFinger" : 0
+        },
+        "swipe" : {
+          "direction" : "down"
+        }
+      }
+    },
+    "pageUp" : {
+      "priority" : 3,
+      "blocking" : 0,
+      "action" : {
+        "type" : "keyPress",
+        "sleepAfter" : 300,
+        "inputEvent" : "VK_PAGE_UP"
+      },
+      "frameData" : {
+        "leftHand" : {
+          "grabStrength" : {
+            "min" : 0.6
+          },
+          "palmVelocity" : {
+            "y" : {
+              "min" : 400
+            }
+          }
+        }
+      }
+    },
+    "pageDown" : {
+      "priority" : 3,
+      "blocking" : 1,
+      "action" : {
+        "type" : "keyPress",
+        "sleepAfter" : 300,
+        "inputEvent" : "VK_PAGE_DOWN"
+      },
+      "frameData" : {
+        "leftHand" : {
+          "grabStrength" : {
+            "min" : 0.4
+          },
+          "palmVelocity" : {
+            "y" : {
+              "max" : -400
+            }
+          }
+        }
+      }
+    }
+  }
+}
