@@ -37,8 +37,7 @@
       "action":{
         "type":"mouseClick",
         "inputEvent":"MOUSE1",
-        "audioReply" : "mouseclick1.mp3",
-        "sleepAfter" : 300
+        "audioReply" : "mouseclick1.mp3"
       },
       "stepArray" : [
         {
