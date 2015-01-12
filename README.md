@@ -60,6 +60,7 @@ Right hand
 - Left mouse button hold: a pinching gesture between the thumb and the index finger will hold left mouse button down. Releasing the pinch will release the mouse button.
 - Right mouse button hold: a pinching gesture between the thumb and the ring finger will hold right mouse button down. Releasing the pinch will release the mouse button.
 - Left mouse button click: pull the hand downwards with a grabbing pose sufficient for cursor release will perform a right click.
+- Mouse wheel: circle gesture with only the index finger extended.
 
 Notice that there are two gestures related to left clicks. The pinching gesture enables drag and drop, but is too unreliable for clicking since it's extremely easy to accidently nudge the pointer.
 
