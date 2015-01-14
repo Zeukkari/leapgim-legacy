@@ -1,5 +1,14 @@
+#!/usr/bin/env node
+
 /*
  * LeapGIM Config and Monitor Utility
+ *
+ * Examples:
+ * leapgim-util
+ * leapgim-util reconfigure FILE
+ * leapgim-util handinfo
+ * leapgim-util pointers
+ *
  */
 
 
