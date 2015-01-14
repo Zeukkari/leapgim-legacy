@@ -1,7 +1,7 @@
 {
   "name": "leapgim",
   "version": "0.0.1",
-  "description": "Leap Motion Gesture Input Mapper",
+  "description": "Control mouse and keybord with Leap Motion",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -17,6 +17,8 @@
   },
   "devDependencies": {},
   "keywords": [
-    "leap"
+    "leap",
+    "leapmotion",
+    "mouse"
   ]
 }
