@@ -11,7 +11,6 @@
  *
  */
 
-
 /*
  * Simple command line argument parsing
  */
@@ -20,12 +19,8 @@ var args = process.argv.slice(2);
 
 var monitorMode = (args[0] == "monitor");
 if(monitorMode) {
-  if(args[1] == "logs" || !args[1]) {
-  	var monitorType = "logs";
-  } else if (args[1] == "gestureRecord") {
+  if (args[1] == "gestureRecord") {
   	var monitorType = "gesture record";
-  }	else if (args[1] == "timestamps") {
-  	var monitorType = "timestamps";
   } else if (args[1] == "pointers") {
   	var monitorType = "pointers";
   } else if (args[1] == "handinfo") {
@@ -40,12 +35,13 @@ if(switchConfig) {
 		if(!require('fs').statSync(configFile).isFile()) {
 			switchConfig = false;
 			console.log("Error! Second argument is not a file");			
+		} else {
+			var config = require(configFile);
 		}
 	}
 }
 
 var queryGestureRecord = (args[0] == "gestures");
-var queryTimestamps = (args[0] == "timestamps");
 var queryHandinfo = (args[0] == "handinfo");
 var queryPointerModel = (args[0] == "pointers");
 var queryStatus = (args[0] == "status");
@@ -60,16 +56,8 @@ var socket = io("http://127.0.0.1:3000").on('connect', function() {
 
 	// Monitoring
 	if(monitorMode) {
-		if(monitorType == "logs") {
-			socket.on('log message', function(msg) {
-				console.log(msg);
-			});
-		} else if(monitorType == "gesture record") {
+		if(monitorType == "gesture record") {
 			socket.on('gesture record', function(msg) {
-				console.log(msg);
-			});
-		} else if (monitorType == "timestamps") {
-			socket.on('timestamps', function(msg) {
 				console.log(msg);
 			});
 		} else if (monitorType == "handinfo") {
@@ -91,15 +79,6 @@ var socket = io("http://127.0.0.1:3000").on('connect', function() {
 			socket.disconnect();
 		});
 		socket.emit('query gesture record');
-	}
-
-	if(queryTimestamps) {
-		socket.on('timestamps', function(msg) {
-			console.log(msg);
-			socket.disconnect();
-		});
-
-		socket.emit('query timestamp data');
 	}
 
 	if(queryHandinfo) {
@@ -132,7 +111,7 @@ var socket = io("http://127.0.0.1:3000").on('connect', function() {
 	// TODO: Switch config
 	if(switchConfig) {
 		console.log("Reconfigure..");
-		socket.emit('reconfigure', configFile);
+		socket.emit('reconfigure', config);
 		socket.disconnect();
 	}
 

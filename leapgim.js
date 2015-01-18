@@ -83,15 +83,14 @@ var manager = (function(){
       statusInfo();
     });
 
-    socket.on('reconfigure', function(configFile){
-      console.log("Reconfiguring with: " + configFile);
-      newConfig = require(configFile);
-      console.log("Reconfigure with: ", newConfig);
+    socket.on('reconfigure', function(newConfig){
+      console.log("Reconfiguring...");
       gestureController.reconfigure(newConfig);
       config = newConfig;
       refreshInterval();
       console.log("Reconfiguration done!");
-      audioController.audioReply("greenlight.mp3");
+      console.log("New config: ", config);
+      audioController.audioReply(config.audio.reconfigure);
     })
   });
 
@@ -99,25 +98,12 @@ var manager = (function(){
     console.log("Listening on *:3000");
   });
 
-  function sendMessage(msg) {
-    io.emit("log message", msg);
-  }
-
-  function log() {
-    var args = arguments;
-
-    console.log(args);
-    io.emit("log message", args);
-  }
-
   function fireEvent(event, data) {
     io.emit(event, data);
   }
 
   return {
-    fireEvent : fireEvent,
-    log : log,
-    info : log
+    fireEvent : fireEvent
   }
 })();
 
@@ -795,7 +781,7 @@ var gestureController = (function(){
       var sensitivity = (touchDistance + 1.1) * sensitivityFactor;
 
       // Clamp
-      if(sensitivity < 0.01) {
+      if(sensitivity < 0.1) {
         //sensitivity = 0.01;
         return;
       }
@@ -2346,29 +2332,29 @@ loopController.setBackground(true);
 
 loopController.on('handFound', function(hand) {
    console.log("handFound");
-   if(hand.type == "right") {
-    //audioController.audioReply("rollover4.mp3"); 
-   } else if(hand.type == "left") {
-    //audioController.audioReply("rollover5.mp3");
-   }
+   // if(hand.type == "right") {
+   //  audioController.audioReply(config.audio.rightHandFound);
+   // } else if(hand.type == "left") {
+   //  audioController.audioReply(config.audio.leftHandFound);
+   // }
 
 });
 loopController.on('handLost', function(hand) {
   console.log("handLost");
-  //audioController.audioReply("switch1.mp3");
+  //audioController.audioReply(config.audio.handLost);
 });
 
 // Device monitoring
 loopController.on('deviceStreaming', function() {
   console.log("deviceStreaming");
   statusInfo();
-  audioController.audioReply("greenlight.mp3");
+  audioController.audioReply(config.audio.ok);
 });
 
 loopController.on('deviceStopped', function() {
   console.log("deviceStopped");
   statusInfo();
-  audioController.audioReply("redlight.mp3");
+  audioController.audioReply(config.audio.error);
 });
 
 loopController.on('connected', function() {
@@ -2378,16 +2364,6 @@ loopController.on('connected', function() {
 
 loopController.on('disconnected', function() {
   console.log("disconnected");
-  statusInfo();
-});
-
-loopController.on('deviceConnected', function() {
-  console.log("deviceConnected");
-  statusInfo();
-});
-
-loopController.on('deviceDisconnected', function() {
-  console.log("deviceDisconnected");
   statusInfo();
 });
 
