@@ -150,15 +150,8 @@ var audioController = (function() {
 
     var exec = require('child_process').exec;
     var child = exec(player + ' ./audio/' + audioFile,
-      function (error, stdout, stderr) {
-        //console.log("Callback?");
-
-        //console.info(error, stdout, stderr);
-        //console.log('stdout: ' + stdout);
-        //console.log('stderr: ' + stderr);
-        if (stderr !== null) {
-          console.log('exec error: ' + stderr);
-        }
+      function () {
+        // ?
     });    
   }
 
@@ -463,7 +456,7 @@ var inputController = (function() {
    *
    */
 
-  function touchpadMove(xArg, yArg, sensitivityArg) {
+  function touchpadMove(xArg, yArg, sensitivityArg, fixedOrigin) {
 
     if(sensitivityArg < 0.1) {
       return;
@@ -481,8 +474,17 @@ var inputController = (function() {
       width : resolution.width * sensitivity,
       height : resolution.height * sensitivity
     }
+
+
     // Mouse pointer coordinates before move. This is used for focusing mouse interaction area.
-    var pointerOrigin = cursorModel;
+    if(fixedOrigin) {
+      var pointerOrigin = {
+        x : resolution.width / 2,
+        y : resolution.height / 2
+      }
+    } else {
+       var pointerOrigin = cursorModel;
+    }
 
     var normalizedOrigin = {
       x : pointerOrigin.x / resolution.width,
@@ -531,11 +533,14 @@ var inputController = (function() {
 
 
     // Updating pointer origin after mouse move should increase stability.
-    if( sensitivity != inputControllerSensitivity ) {
-      //console.log("update sensitivity to: " + newSensitivity);
-      refreshPointerOrigin();
-      inputControllerSensitivity = sensitivity;
-    }
+    refreshPointerOrigin();
+
+    // 
+    // if( sensitivity != inputControllerSensitivity ) {
+    //   //console.log("update sensitivity to: " + newSensitivity);
+    //   refreshPointerOrigin();
+    //   inputControllerSensitivity = sensitivity;
+    // }
 
   }
 
@@ -764,7 +769,7 @@ var gestureController = (function(){
 
       var handCoordinatePoint = pointerModel[cursorHand][cursorFinger];
 
-      inputController.touchpadMove(handCoordinatePoint.x, handCoordinatePoint.y, action.sensitivity);
+      inputController.touchpadMove(handCoordinatePoint.x, handCoordinatePoint.y, action.sensitivity, action.useFixedOrigin);
     } else if(action.type == "focusMove") {
 
       var cursorHand = gestureData.pointer.hand;
@@ -778,16 +783,9 @@ var gestureController = (function(){
       var sensitivityFactor = action.sensitivity || 1;
 
       // Normalize from [-1,1] to [0,2]
-      var sensitivity = (touchDistance + 1.1) * sensitivityFactor;
+      var sensitivity = (touchDistance + 1) * sensitivityFactor;
 
-      // Clamp
-      if(sensitivity < 0.1) {
-        //sensitivity = 0.01;
-        return;
-      }
-
-
-      inputController.touchpadMove(handCoordinatePoint.x, handCoordinatePoint.y, sensitivity);
+      inputController.touchpadMove(handCoordinatePoint.x, handCoordinatePoint.y, sensitivity, action.useFixedOrigin);
     } else if(action.type == "grabFocusMove") {
 
       var cursorHand = gestureData.pointer.hand;
@@ -808,7 +806,7 @@ var gestureController = (function(){
 
       //console.info("hand coordinate point: ", handCoordinatePoint);
 
-      inputController.touchpadMove(handCoordinatePoint.x, handCoordinatePoint.y, sensitivity);
+      inputController.touchpadMove(handCoordinatePoint.x, handCoordinatePoint.y, sensitivity, action.useFixedOrigin);
     } else if(action.type == "trackpointMove") {
 
       //console.log("trackpointMove");
@@ -1009,7 +1007,7 @@ var gestureController = (function(){
    * Produce x and y coordinates for a leap pointable.
    */
 
-  function relative3DPosition( frame, leapPoint ) {
+  function relative3DPosition( frame, leapPoint, handType ) {
     var iBox = frame.interactionBox;
 
     //console.info("iBox size: ", iBox.size);
@@ -1028,13 +1026,9 @@ var gestureController = (function(){
     // - Eases hand fatique
     // - Supports two hand gestures by discouraging gestures where hands are on top of each other.
     if(pointerConfig.handOffsets) {
-      var hand = pointable.hand();
-      if(!hand.valid) {
-        return;
-      }
-      if(hand.type == "left") {
+      if(handType == "leftHand") {
         var offset = 0.5;
-      } else if(hand.type == "right") {
+      } else if(handType == "rightHand") {
         var offset = -0.5;
       } else {
         // ...
@@ -1089,6 +1083,12 @@ var gestureController = (function(){
     for(var handType in handMap) {
 
       var hand = handMap[handType];
+
+      var minConfidence = config.minConfidence || 0;
+
+      if(hand.confidence < minConfidence) {
+        return;
+      }
 
       if(hand.thumb) {
         var fingerType = "thumb";
@@ -1294,6 +1294,11 @@ var gestureController = (function(){
 
     // Skip invalid hand objects.. these seem to be sometimes present.
     if(!hand.valid) {
+      return false;
+    }
+
+    var minConfidence = config.minConfidence || 0;
+    if(hand.confidence < minConfidence) {
       return false;
     }
 
