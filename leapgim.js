@@ -20,14 +20,14 @@ var args = process.argv.slice(2);
 if(args[0] == "-c" || args[0] == "--config") {
   var configFile = args[1];
 } else {
-  var configFile = "config.json";
+  var configFile = "./etc/config.json";
 }
 
 /*
  * Load JSON config from config.json
  */
 
-config = require('./' + configFile);
+config = require(configFile);
 
 
 /*
@@ -56,7 +56,7 @@ var manager = (function(){
   });
 
   io.on('connection', function(socket){
-    manager.log("Connection established");
+    console.log("Connection established");
 
     socket.on('query gesture record', function(){
       var gestureRecord = gestureController.getGestureRecord().gestureRecord;
@@ -85,8 +85,8 @@ var manager = (function(){
 
     socket.on('reconfigure', function(configFile){
       console.log("Reconfiguring with: " + configFile);
-      newConfig = require('./' + configFile);
-      manager.log("Reconfigure with: ", newConfig);
+      newConfig = require(configFile);
+      console.log("Reconfigure with: ", newConfig);
       gestureController.reconfigure(newConfig);
       config = newConfig;
       refreshInterval();
@@ -96,7 +96,7 @@ var manager = (function(){
   });
 
   http.listen(3000, function() {
-    manager.log("Listening on *:3000");
+    console.log("Listening on *:3000");
   });
 
   function sendMessage(msg) {
@@ -168,10 +168,10 @@ var audioController = (function() {
         //console.log("Callback?");
 
         //console.info(error, stdout, stderr);
-        //manager.log('stdout: ' + stdout);
-        //manager.log('stderr: ' + stderr);
+        //console.log('stdout: ' + stdout);
+        //console.log('stderr: ' + stderr);
         if (stderr !== null) {
-          manager.log('exec error: ' + stderr);
+          console.log('exec error: ' + stderr);
         }
     });    
   }
@@ -242,7 +242,7 @@ var inputController = (function() {
       y : pointerLocation().y
     }
 
-    //manager.info("Pointer origin changed: ", cursorModel);
+    //console.info("Pointer origin changed: ", cursorModel);
   }
 
   /*
@@ -261,7 +261,7 @@ var inputController = (function() {
       } else {
         buttonModel.button1Down = true;
         robot.mousePressSync(java.getStaticFieldValue("java.awt.event.InputEvent", "BUTTON1_DOWN_MASK"));
-        manager.log("Mouse1 down!");
+        console.log("Mouse1 down!");
         return true;
       }
     } else if(button == "MOUSE2") {
@@ -271,7 +271,7 @@ var inputController = (function() {
       } else {
         buttonModel.button2Down = true;
         robot.mousePressSync(java.getStaticFieldValue("java.awt.event.InputEvent", "BUTTON3_DOWN_MASK"));
-        manager.log("Mouse2 down!");
+        console.log("Mouse2 down!");
         return true;        
       }
     }
@@ -289,14 +289,14 @@ var inputController = (function() {
 
   function mouseUp(button) {
 
-    //manager.log("Mouse up!");
+    //console.log("Mouse up!");
     if(button == "MOUSE1") {
 
       // Mouse button already up
       if(buttonModel.button1Down) {
         buttonModel.button1Down = false;
         robot.mouseReleaseSync(java.getStaticFieldValue("java.awt.event.InputEvent", "BUTTON1_DOWN_MASK"));
-        manager.log("Mouse1 up!");
+        console.log("Mouse1 up!");
         return true;
       } else {
         return false;
@@ -306,7 +306,7 @@ var inputController = (function() {
       if(buttonModel.button2Down) {
         buttonModel.button2Down = false;
         robot.mouseReleaseSync(java.getStaticFieldValue("java.awt.event.InputEvent", "BUTTON3_DOWN_MASK"));
-        manager.log("Mouse2 up!");
+        console.log("Mouse2 up!");
         return true; 
       } else {
         return false;       
@@ -347,7 +347,7 @@ var inputController = (function() {
     if(!keyboardModel[button]) {
       robot.keyPressSync(java.getStaticFieldValue("java.awt.event.KeyEvent", button));
       keyboardModel[button] = true;
-      manager.log("Key down: " + button);
+      console.log("Key down: " + button);
       return true;
     } else {
       return false;
@@ -370,7 +370,7 @@ var inputController = (function() {
 
     if(keyboardModel[button]) {
       robot.keyReleaseSync(java.getStaticFieldValue("java.awt.event.KeyEvent", button));
-      manager.log("Key up: " + button);
+      console.log("Key up: " + button);
       keyboardModel[button] = false;
       // Delete keydown record
       keyDownRecord[button] = false;
@@ -449,7 +449,7 @@ var inputController = (function() {
     var x = xArg - normalizedOrigin.x;
     var y = yArg - normalizedOrigin.y;
 
-    //manager.info("TrackpointMove x: " + x + ", y: " + y);
+    //console.info("TrackpointMove x: " + x + ", y: " + y);
 
     // Omit pointer move if cursor is close to the pointer origin. This makes precission mouse clicks easier.
     if(Math.abs(x) < 0.05 && Math.abs(y) < 0.05) {
@@ -483,8 +483,8 @@ var inputController = (function() {
       return;
     }
 
-    //manager.info("touchpadMove x: " + xArg + ", y: " + yArg +", sensitivity: " + sensitivityArg);
-    //manager.info("sensitivity: " + sensitivityArg);
+    //console.info("touchpadMove x: " + xArg + ", y: " + yArg +", sensitivity: " + sensitivityArg);
+    //console.info("sensitivity: " + sensitivityArg);
 
     var sensitivity = sensitivityArg || 1.1;
 
@@ -546,7 +546,7 @@ var inputController = (function() {
 
     // Updating pointer origin after mouse move should increase stability.
     if( sensitivity != inputControllerSensitivity ) {
-      //manager.log("update sensitivity to: " + newSensitivity);
+      //console.log("update sensitivity to: " + newSensitivity);
       refreshPointerOrigin();
       inputControllerSensitivity = sensitivity;
     }
@@ -762,10 +762,10 @@ var gestureController = (function(){
     //   gestureRecord[gestureKey] = 0;  
     // }
 
-    //manager.info("Action: ", action);
+    //console.info("Action: ", action);
 
     if(sleep) {
-      //manager.log("Sleeping.. action " + action.type + " omitted.");
+      //console.log("Sleeping.. action " + action.type + " omitted.");
       return;
     }  
 
@@ -825,7 +825,7 @@ var gestureController = (function(){
       inputController.touchpadMove(handCoordinatePoint.x, handCoordinatePoint.y, sensitivity);
     } else if(action.type == "trackpointMove") {
 
-      //manager.log("trackpointMove");
+      //console.log("trackpointMove");
 
       // var cursorHand = pointerConfig.hand;
       // var focusPoint = pointerConfig.focusPoint;
@@ -836,22 +836,22 @@ var gestureController = (function(){
 
       var handCoordinatePoint = pointerModel[cursorHand][focusPoint];
 
-      //manager.info("handCoordinatePoint: ", handCoordinatePoint);
-      //manager.info("pointerModel: ", pointerModel);
+      //console.info("handCoordinatePoint: ", handCoordinatePoint);
+      //console.info("pointerModel: ", pointerModel);
 
       inputController.trackpointMove(handCoordinatePoint.x, handCoordinatePoint.y, useFixedOrigin);
     }
     else if (action.type == "mouseWheel") {
-      manager.log("Mouse wheel!");
+      console.log("Mouse wheel!");
       actionOk = inputController.mouseWheel(action.wheelAmt);
     }
     else if (action.type == "mouseDown") {
-      //manager.log("Mouse down!");
+      //console.log("Mouse down!");
       actionOk = inputController.mouseDown(action.inputEvent);
     }
 
     else if (action.type == "mouseUp") {
-      //manager.log("Mouse up!");
+      //console.log("Mouse up!");
       actionOk = inputController.mouseUp(action.inputEvent);
     }
 
@@ -864,7 +864,7 @@ var gestureController = (function(){
     else if(action.type == "keyPress") {
       var inputEvent = action.inputEvent;
 
-      //manager.info("Attempt key press: " + inputEvent);
+      //console.info("Attempt key press: " + inputEvent);
 
       actionOk = actionOk && inputController.keyDown(inputEvent);
       actionOk = actionOk && inputController.keyUp(inputEvent);
@@ -873,14 +873,14 @@ var gestureController = (function(){
     else if (action.type == "keyDown") {
       var inputEvent = action.inputEvent;
 
-      //manager.info("Attempt key down: " + inputEvent);
+      //console.info("Attempt key down: " + inputEvent);
 
       actionOk = inputController.keyDown(inputEvent);
     }
     else if (action.type == "keyUp") {
       var inputEvent = action.inputEvent;
 
-      //manager.info("Attempt key up: " + inputEvent);
+      //console.info("Attempt key up: " + inputEvent);
 
       actionOk = inputController.keyUp(inputEvent);
     }
@@ -889,16 +889,16 @@ var gestureController = (function(){
       // TODO: Basic error checking and exception handling
 
       var cmd = action.cmd;
-      manager.log("Execute command: ", cmd);
+      console.log("Execute command: ", cmd);
 
       var execFile = require('child_process').exec
 
       var child = execFile('./bin/' + cmd,
         function (error, stdout, stderr) {
-          //manager.log('stdout: ' + stdout);
-          //manager.log('stderr: ' + stderr);
+          //console.log('stdout: ' + stdout);
+          //console.log('stderr: ' + stderr);
           if (error !== null) {
-            manager.log('exec error: ' + error);
+            console.log('exec error: ' + error);
           }
       });
     }
@@ -912,7 +912,7 @@ var gestureController = (function(){
     }
 
     if(actionOk) {
-      //manager.info("executed action: ", action);
+      //console.info("executed action: ", action);
     }
 
     // Audio reply
@@ -928,8 +928,8 @@ var gestureController = (function(){
     if(action.sleepAfter) {
       sleep = action.sleepAfter;
       setTimeout(function() {
-        manager.log("Awake again!");
-        //manager.info("gestureRecord after sleep: ", gestureRecord);
+        console.log("Awake again!");
+        //console.info("gestureRecord after sleep: ", gestureRecord);
         sleep = 0;
       }, sleep);
     }
@@ -949,7 +949,7 @@ var gestureController = (function(){
     var vectorZ = normalVector[2];
 
     if(debug) {
-      manager.info("leapDirection: x: " + vectorX + ", y: " + vectorY + ", z:" + vectorZ );
+      console.info("leapDirection: x: " + vectorX + ", y: " + vectorY + ", z:" + vectorZ );
     }
 
     // Up
@@ -986,8 +986,8 @@ var gestureController = (function(){
 
   function mapHands(frame) {
 
-    //manager.info("frame: ", frame);
-    //manager.info("frame.hands.length: ", frame.hands.length);
+    //console.info("frame: ", frame);
+    //console.info("frame.hands.length: ", frame.hands.length);
 
     if(!frame.valid) {
       return false;
@@ -1026,7 +1026,7 @@ var gestureController = (function(){
   function relative3DPosition( frame, leapPoint ) {
     var iBox = frame.interactionBox;
 
-    //manager.info("iBox size: ", iBox.size);
+    //console.info("iBox size: ", iBox.size);
 
     //var leapPoint = pointable.tipPosition;
     //var leapPoint = pointable.stabilizedTipPosition;
@@ -1052,7 +1052,7 @@ var gestureController = (function(){
         var offset = -0.5;
       } else {
         // ...
-        manager.log("Error Hand is neither left nor right!");
+        console.log("Error Hand is neither left nor right!");
         return;
       }
 
@@ -1094,7 +1094,7 @@ var gestureController = (function(){
 
     var handMap = mapHands(frame);
 
-    //manager.info("handmap: ", handMap);
+    //console.info("handmap: ", handMap);
 
     if(!handMap) {
       return;
@@ -1304,20 +1304,20 @@ var gestureController = (function(){
 
   function validateHand(hand, handData, frame) {
 
-    //manager.log("pinchStrength: ", hand.pinchStrength);
+    //console.log("pinchStrength: ", hand.pinchStrength);
 
     // Skip invalid hand objects.. these seem to be sometimes present.
     if(!hand.valid) {
       return false;
     }
 
-    //manager.info("handData: ", handData);
-    //manager.info("hand: ", hand);
+    //console.info("handData: ", handData);
+    //console.info("hand: ", hand);
 
     // Test
-    //manager.info("palmNormal: ", hand.palmNormal);
+    //console.info("palmNormal: ", hand.palmNormal);
 
-    //manager.info("hand confidence: ", hand.confidence);
+    //console.info("hand confidence: ", hand.confidence);
 
     // Check for undef since we want to allow extended fingers, unextended fingers and either for various gestures
     if(typeof handData.thumb !== 'undefined') {
@@ -1355,17 +1355,17 @@ var gestureController = (function(){
       // Vector [x, y, z] representing palm normal
       var normalVector = hand.palmNormal;
       var palmDirection = leapDirection(normalVector);
-      //manager.info("palmDirection: " + palmDirection, " handData.plamDirection: " + handData.palmDirection);
+      //console.info("palmDirection: " + palmDirection, " handData.plamDirection: " + handData.palmDirection);
       if(handData.palmDirection != palmDirection) {
         return false;
       }
 
-      //manager.log("Returning true after palmDirection validation: " + palmDirection);
+      //console.log("Returning true after palmDirection validation: " + palmDirection);
     }
 
     // Pinch strength
     if(typeof handData.pinchStrength !== 'undefined') {
-      //manager.log("pinchStrength: ", hand.pinchStrength);
+      //console.log("pinchStrength: ", hand.pinchStrength);
       var pinchStrength = hand.pinchStrength;
 
       if(handData.pinchStrength.min) {
@@ -1384,7 +1384,7 @@ var gestureController = (function(){
     // Velocity
     // TODO: Figure out a use for this
     if(typeof handData.palmVelocity !== 'undefined') {
-      //manager.log("palmVelocity: ", hand.palmVelocity);
+      //console.log("palmVelocity: ", hand.palmVelocity);
 
       var velocityX = hand.palmVelocity[0];
       var velocityY = hand.palmVelocity[1];
@@ -1431,7 +1431,7 @@ var gestureController = (function(){
       var previousFrame = loopController.frame(1);
       var rotation = hand.rotationAxis(previousFrame);
 
-      //manager.info("rotation: [" + rotation[0] + "," + rotation[1] + "," + rotation[2] + "]");
+      //console.info("rotation: [" + rotation[0] + "," + rotation[1] + "," + rotation[2] + "]");
 
       var rotationX = rotation[0];
       var rotationY = rotation[1];
@@ -1469,7 +1469,7 @@ var gestureController = (function(){
     }
 
     // Grab strength
-    //manager.log("grabStrength: ", hand.grabStrength);
+    //console.log("grabStrength: ", hand.grabStrength);
     if(typeof handData.grabStrength !== 'undefined') {
       if(typeof handData.grabStrength.min !== 'undefined') {
         if(hand.grabStrength < handData.grabStrength.min) {
@@ -1485,7 +1485,7 @@ var gestureController = (function(){
 
 
     // Sphere radius
-    //manager.log("sphereRadius: ", hand.sphereRadius);
+    //console.log("sphereRadius: ", hand.sphereRadius);
     if(typeof handData.sphereRadius !== 'undefined') {
       if(typeof handData.sphereRadius.min !== 'undefined') {
         if(hand.sphereRadius < handData.sphereRadius.min) {
@@ -1517,7 +1517,7 @@ var gestureController = (function(){
     }
 
 
-    //manager.info("handData: ", handData);
+    //console.info("handData: ", handData);
 
     if(handData.pointer) {
 
@@ -1530,23 +1530,23 @@ var gestureController = (function(){
       }
 
       var handCoordinatePoint = pointerModel[handType][handData.pointer];
-      //manager.info("Finger x: ", handCoordinatePoint.x);
-      //manager.info("Finger y: ", handCoordinatePoint.y);
-      //manager.info("Finger z: ", handCoordinatePoint.touchDistance);
+      //console.info("Finger x: ", handCoordinatePoint.x);
+      //console.info("Finger y: ", handCoordinatePoint.y);
+      //console.info("Finger z: ", handCoordinatePoint.touchDistance);
 
-      //manager.info("handData: ", handData);
+      //console.info("handData: ", handData);
 
       //console.log("handCoordinatePoint: ", handCoordinatePoint);
 
       // Test maxTouchDistance - value 0 is validation
       if(typeof handData.maxTouchDistance !== 'undefined') {
-        //manager.info("Touchdistance model: " + handCoordinatePoint.touchDistance + ", ref: " + handData.maxTouchDistance );
+        //console.info("Touchdistance model: " + handCoordinatePoint.touchDistance + ", ref: " + handData.maxTouchDistance );
         if(handCoordinatePoint.touchDistance > handData.maxTouchDistance) {
           return false;
         }
       }
       if(typeof handData.minTouchDistance !== 'undefined') {
-        //manager.info("Touchdistance model: " + handCoordinatePoint.touchDistance + ", ref: " + handData.maxTouchDistance );
+        //console.info("Touchdistance model: " + handCoordinatePoint.touchDistance + ", ref: " + handData.maxTouchDistance );
         if(handCoordinatePoint.touchDistance < handData.minTouchDistance) {
           return false;
         }
@@ -1583,7 +1583,7 @@ var gestureController = (function(){
 
   function validateSwipe(swipe, gestureData, frame) {
 
-    //manager.log("Validate swipe: ", swipe);
+    //console.log("Validate swipe: ", swipe);
 
     // Nothing to validate
     if(!gestureData.swipe) {
@@ -1593,9 +1593,9 @@ var gestureController = (function(){
     if(gestureData.swipe.direction) {
       var normalVector = swipe.direction;
       var swipeDirection = leapDirection(normalVector);
-      //manager.log("swipe direction: ", swipeDirection);
+      //console.log("swipe direction: ", swipeDirection);
       if(gestureData.swipe.direction != swipeDirection) {
-        //manager.log("Swipe validation failed on direction..");
+        //console.log("Swipe validation failed on direction..");
         return false;
       }
     }
@@ -1625,16 +1625,16 @@ var gestureController = (function(){
       //   ringFinger : hand.ringFinger.extended
       // }
 
-      //manager.log("Swipe hand validation failed...");
-      //manager.log("Hand state: ", debugHand);
+      //console.log("Swipe hand validation failed...");
+      //console.log("Hand state: ", debugHand);
 
       return false;
     }
 
 
-    //manager.info("Validate swipe: ", gestureData);
+    //console.info("Validate swipe: ", gestureData);
 
-    //manager.info(gestureData.swipe);
+    //console.info(gestureData.swipe);
 
 
     return true;
@@ -1655,7 +1655,7 @@ var gestureController = (function(){
     if(gestureData.circle.direction) {
       var normalVector = circle.normal;
       var circleDirection = leapDirection(normalVector);
-      //manager.log("Circle direction: " + circleDirection);
+      //console.log("Circle direction: " + circleDirection);
       if(gestureData.circle.direction != circleDirection) {
         return false;
       }
@@ -1768,9 +1768,9 @@ var gestureController = (function(){
 
   function validateHands(handMap, frameData, frame) {
 
-    //manager.info("validateHands...");
-    //manager.info("handMap: ", handMap);
-    //manager.info("frameData: ", frameData);
+    //console.info("validateHands...");
+    //console.info("handMap: ", handMap);
+    //console.info("frameData: ", frameData);
 
     if(!handMap) {
       return false;
@@ -1782,15 +1782,15 @@ var gestureController = (function(){
     // Process left hand gestures
     if(typeof frameData.leftHand !== 'undefined') {
       if(!leftHand) {
-        //manager.log("No left hand..");
+        //console.log("No left hand..");
         return false;
       }
 
       var hand = leftHand;
       var handData = frameData.leftHand;
 
-      //manager.info("validateHand: ", hand);
-      //manager.info("handData: ", handData);
+      //console.info("validateHand: ", hand);
+      //console.info("handData: ", handData);
 
       // var debugHand = {
       //   thumb : hand.thumb.extended,
@@ -1800,12 +1800,12 @@ var gestureController = (function(){
       //   ringFinger : hand.ringFinger.extended
       // }
 
-      // manager.log("Validate left hand..");
-      // manager.log("handData: ", handData);
-      // manager.log("hand: ", debugHand);
+      // console.log("Validate left hand..");
+      // console.log("handData: ", handData);
+      // console.log("hand: ", debugHand);
 
       if( !validateHand(hand, handData, frame) ) {
-        //manager.log("Invalid left hand..");
+        //console.log("Invalid left hand..");
         return false;
       }
     }
@@ -1813,7 +1813,7 @@ var gestureController = (function(){
     // Process right hand gestures
     if(typeof frameData.rightHand !== 'undefined') {
       if(!rightHand) {
-        //manager.log("No right hand..");
+        //console.log("No right hand..");
         return false;
       }
 
@@ -1828,15 +1828,15 @@ var gestureController = (function(){
       //   ringFinger : hand.ringFinger.extended
       // }
 
-      // //manager.info("validateHand: ", hand);
-      // //manager.info("handData: ", handData);
+      // //console.info("validateHand: ", hand);
+      // //console.info("handData: ", handData);
 
-      // manager.log("Validate right hand..");
-      // manager.log("handData: ", handData);
-      // manager.log("hand: ", debugHand);
+      // console.log("Validate right hand..");
+      // console.log("handData: ", handData);
+      // console.log("hand: ", debugHand);
 
       if( !validateHand(hand, handData, frame) ) {
-        //manager.log("Invalid right hand..");
+        //console.log("Invalid right hand..");
         return false;
       }
 
@@ -1872,12 +1872,12 @@ var gestureController = (function(){
 
   function matchGesture(gesture, frame, step) {
 
-    //manager.info("matchGesture", gesture);
-    //manager.info("step: ", step);
+    //console.info("matchGesture", gesture);
+    //console.info("step: ", step);
 
-    //manager.info("Match gesture: ", gesture);
-    //manager.info("pointerConfig: ", pointerConfig);
-    //manager.info("step: ", step);
+    //console.info("Match gesture: ", gesture);
+    //console.info("pointerConfig: ", pointerConfig);
+    //console.info("step: ", step);
 
     if(!gesture) {
       return false;
@@ -1901,7 +1901,7 @@ var gestureController = (function(){
       return false;
     }
 
-    //manager.log("Hands ok without gesture...");
+    //console.log("Hands ok without gesture...");
 
     // Leap API gestures: swipe and circle
     // Scan through gestures and only return true if a valid gesture is detected!   
@@ -1912,7 +1912,7 @@ var gestureController = (function(){
 
       var swipeDetected = false;
 
-      //manager.info("Frame gestures: ", frame.gestures);
+      //console.info("Frame gestures: ", frame.gestures);
 
       if(frame.gestures.length > 0) {
         for(var i = 0; i < frame.gestures.length; i++) {
@@ -1959,7 +1959,7 @@ var gestureController = (function(){
       }
     }
 
-    //manager.log("Gesture matches!", gesture.action.type);
+    //console.log("Gesture matches!", gesture.action.type);
 
     return true;
   }
@@ -1991,17 +1991,17 @@ var gestureController = (function(){
    */
 
   function updateGestureRecord(gestureKey, timestamp, step, leapFrame) {
-    //manager.info("Update gesture record..", gestureKey, ", timestamp: ", timestamp + ", step: " + step);
-    //manager.info("sleep: " + sleep);
+    //console.info("Update gesture record..", gestureKey, ", timestamp: ", timestamp + ", step: " + step);
+    //console.info("sleep: " + sleep);
 
     if(sleep) {
-      //manager.log("Sleeping.. action " + gestureKey + " omitted.");
+      //console.log("Sleeping.. action " + gestureKey + " omitted.");
       return;
     }
 
     var gestureBlocked = (blockingGesture && blockingGesture != gestureKey);
 
-    //manager.log("Blocking gesture: " + blockingGesture);
+    //console.log("Blocking gesture: " + blockingGesture);
 
     if(!gestureRecord[gestureKey]) {
       gestureRecord[gestureKey] = {};
@@ -2014,7 +2014,7 @@ var gestureController = (function(){
     }
 
     if(gestureBlocked) {
-      manager.log("Gesture blocked.. clearing timestamp record: " + gestureKey);
+      console.log("Gesture blocked.. clearing timestamp record: " + gestureKey);
       gestureTearDown(gestureKey);
     } else {
 
@@ -2043,7 +2043,7 @@ var gestureController = (function(){
         if(gestureData.time) {
           // A previous record exists.. calculate time
           if(gestureRecord[gestureKey].timestamp) {
-            //manager.info("Update gesture record time: ", timestamp - timestampData[gestureKey]);
+            //console.info("Update gesture record time: ", timestamp - timestampData[gestureKey]);
             var timeCap = gestureData.time;
             if(timestamp - gestureRecord[gestureKey].timestamp > timeCap) {
               console.log("Increase gesture: " + gestureKey + " step (" + step + ")");
@@ -2092,7 +2092,7 @@ var gestureController = (function(){
         if(gestureRecord[gestureKey].step > 0 && actionMap[gestureKey].stepArray) {
           var previousStep = gestureRecord[gestureKey].step-1;
 
-          //manager.log("Gesture " + gestureKey + " previous step: " + previousStep);
+          //console.log("Gesture " + gestureKey + " previous step: " + previousStep);
 
           var previousGestureStillActive = matchGesture(actionMap[gestureKey], leapFrame, previousStep);
 
@@ -2103,14 +2103,14 @@ var gestureController = (function(){
               blockingGesture = gestureKey;
             }
 
-            //manager.log("Previous gesture step still active: " + gestureKey + "(" + previousStep + ")");
+            //console.log("Previous gesture step still active: " + gestureKey + "(" + previousStep + ")");
 
             // Maintain the gestureRecord step number
             gestureRecord[gestureKey].timestamp = timestamp;
 
           } else {
 
-            //manager.log("Previous step no longer active.." + gestureKey);
+            //console.log("Previous step no longer active.." + gestureKey);
 
             //console.log("gestureKey: ", gestureKey);
             //console.log("previousStep: ", previousStep);
@@ -2118,14 +2118,14 @@ var gestureController = (function(){
             // Gesture does not match - clear outdated gesture records
             var gestureData = actionMap[gestureKey].stepArray[previousStep];
 
-            //manager.info("gestureData: ", gestureData);
+            //console.info("gestureData: ", gestureData);
 
             var timeCap = gestureData.timeout;
 
-            //manager.info("timeCap: " + timeCap);
+            //console.info("timeCap: " + timeCap);
 
             if(timeCap) {
-              //manager.log("Time cap present");
+              //console.log("Time cap present");
               if(timestamp - gestureRecord[gestureKey].timestamp > timeCap) {
                 gestureTearDown(gestureKey);
               }
@@ -2151,7 +2151,7 @@ var gestureController = (function(){
 
 
 
-    //manager.info("gestureRecord after update: ", gestureRecord);
+    //console.info("gestureRecord after update: ", gestureRecord);
     manager.fireEvent("gesture record", gestureRecord);
   }
 
@@ -2165,13 +2165,13 @@ var gestureController = (function(){
 
   function updateGestureRecords(leapFrame, timestamp) {
 
-    //manager.info("gestureRecord: ", gestureRecord);
-    //manager.info("timestampData: ", timestampData);
+    //console.info("gestureRecord: ", gestureRecord);
+    //console.info("timestampData: ", timestampData);
 
-    //manager.info("Update gesture records: ", timestamp);
-    //manager.info("Blocking gesture from previous frame: ", blockingGesture);
+    //console.info("Update gesture records: ", timestamp);
+    //console.info("Blocking gesture from previous frame: ", blockingGesture);
     
-    //manager.info("actionMap (A): ", actionMap);
+    //console.info("actionMap (A): ", actionMap);
 
     blockingGesture = "";
 
@@ -2191,7 +2191,7 @@ var gestureController = (function(){
       var priorityA = actionMap[keyA].priority || 6;
       var priorityB = actionMap[keyB].priority || 6;
 
-      //manager.info("priorityA: " + priorityA +", priorityB: " + priorityB);
+      //console.info("priorityA: " + priorityA +", priorityB: " + priorityB);
 
       if(priorityA < priorityB) {
         return -1;
@@ -2203,13 +2203,13 @@ var gestureController = (function(){
 
     });
 
-    //manager.info("keyArray: ", keyArray);
+    //console.info("keyArray: ", keyArray);
 
     for(var i = 0; i<keyArray.length; i++) {
       var gestureKey = keyArray[i];
 
-      //manager.log("Gesture key: ", gestureKey);
-      //manager.log("Blocking gesture in loop: ", blockingGesture);
+      //console.log("Gesture key: ", gestureKey);
+      //console.log("Blocking gesture in loop: ", blockingGesture);
 
       if(blockingGesture && gestureKey != blockingGesture) {
         continue;
@@ -2220,8 +2220,8 @@ var gestureController = (function(){
         break;
       }
 
-      //manager.log("gestureKey: ", gestureKey);
-      //manager.info("actionMap[gestureKey]: ", actionMap[gestureKey]);
+      //console.log("gestureKey: ", gestureKey);
+      //console.info("actionMap[gestureKey]: ", actionMap[gestureKey]);
 
       // Initiate gesture record if one is not present
       if(!gestureRecord[gestureKey]) {
@@ -2243,10 +2243,10 @@ var gestureController = (function(){
     //manager.fireEvent("gesture record", gestureRecord);
     //manager.fireEvent("timestamps", timestampData);
 
-    //manager.info("gestureRecord: ", gestureRecord);
+    //console.info("gestureRecord: ", gestureRecord);
 
-    //manager.log("Blocking gesture after loop: ", blockingGesture);
-    //manager.log("-----Iteration over---------");
+    //console.log("Blocking gesture after loop: ", blockingGesture);
+    //console.log("-----Iteration over---------");
 
     lastFrameProcessed = leapFrame.id;
 
@@ -2291,7 +2291,7 @@ var gestureController = (function(){
     gestureRecord = {};
     timestampData = {};
 
-    manager.log("actionMap after reconfigure: ", actionMap);
+    console.log("actionMap after reconfigure: ", actionMap);
 
   }
 
@@ -2345,7 +2345,7 @@ loopController.setBackground(true);
 // Hand tracking event handlers
 
 loopController.on('handFound', function(hand) {
-   manager.log("handFound");
+   console.log("handFound");
    if(hand.type == "right") {
     //audioController.audioReply("rollover4.mp3"); 
    } else if(hand.type == "left") {
@@ -2354,45 +2354,45 @@ loopController.on('handFound', function(hand) {
 
 });
 loopController.on('handLost', function(hand) {
-  manager.log("handLost");
+  console.log("handLost");
   //audioController.audioReply("switch1.mp3");
 });
 
 // Device monitoring
 loopController.on('deviceStreaming', function() {
-  manager.log("deviceStreaming");
+  console.log("deviceStreaming");
   statusInfo();
   audioController.audioReply("greenlight.mp3");
 });
 
 loopController.on('deviceStopped', function() {
-  manager.log("deviceStopped");
+  console.log("deviceStopped");
   statusInfo();
   audioController.audioReply("redlight.mp3");
 });
 
 loopController.on('connected', function() {
-  manager.log("connected");
+  console.log("connected");
   statusInfo();
 });
 
 loopController.on('disconnected', function() {
-  manager.log("disconnected");
+  console.log("disconnected");
   statusInfo();
 });
 
 loopController.on('deviceConnected', function() {
-  manager.log("deviceConnected");
+  console.log("deviceConnected");
   statusInfo();
 });
 
 loopController.on('deviceDisconnected', function() {
-  manager.log("deviceDisconnected");
+  console.log("deviceDisconnected");
   statusInfo();
 });
 
 loopController.on('deviceRemoved', function() {
-  manager.log("deviceRemoved");
+  console.log("deviceRemoved");
   statusInfo();
 });
 
@@ -2411,7 +2411,7 @@ function processFrame() {
   var frame = loopController.frame();
 
   if(!frame.valid) {
-    manager.log("Invalid frame!");
+    console.log("Invalid frame!");
     return;
   }
 
@@ -2452,5 +2452,5 @@ function refreshInterval() {
 loopController.connect();
 
 if(!loopController.streaming()) {
-  manager.log("Device is not operational");
+  console.log("Device is not operational");
 }
