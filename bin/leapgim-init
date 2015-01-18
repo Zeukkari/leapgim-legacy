@@ -1,7 +1,9 @@
 #!/bin/bash
 
+cd $HOME/node_modules/leapgim
+
 if [ "$1" == "start" ]; then
-	forever list | grep leapgim.js || forever start leapgim.js
+	forever list | grep leapgim.js || forever start leapgim.js --config ~/leapgim-conf/mouse-config.json
 elif [ "$1" == "status" ]; then
 	if ( forever list | grep leapgim.js ); then
 		echo "Leap control is running"
@@ -12,16 +14,16 @@ elif [ "$1" == "toggle" ]; then
 	if ( forever list | grep leapgim.js ); then
 		forever stop leapgim.js
 	else
-		forever start leapgim.js
+		forever start leapgim.js --config ~/leapgim-conf/mouse-config.json
 	fi
 elif [ "$1" == "stop" ]; then
 	forever list | grep leapgim.js && forever stop leapgim.js
 elif [ "$1" == "media-config" ]; then
 	if ( forever list | grep leapgim.js ); then
-		node leapctl.js reconfigure media-config.json
+		bin/leapgim-util reconfigure ~/leapgim-conf/media-config.json
 	fi
 elif [ "$1" == "mouse-config" ]; then
 	if ( forever list | grep leapgim.js ); then
-		node leapctl.js reconfigure mouse-config.json
+		bin/leapgim-util reconfigure ~/leapgim-conf/mouse-config.json
 	fi
 fi
