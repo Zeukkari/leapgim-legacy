@@ -372,9 +372,10 @@ var inputController = (function() {
     var graphicsDevice = java.callMethodSync(graphicsEnvironment, "getDefaultScreenDevice");
     var displayMode = java.callMethodSync(graphicsDevice, "getDisplayMode");
 
+    // Adjust reported resolution up to compensate for inaccurate gesture detection in the edges of the sensor's field of vision
     var screenResolution = {
-      height : java.callMethodSync(displayMode, "getHeight"),
-      width : java.callMethodSync(displayMode, "getWidth")
+      height : java.callMethodSync(displayMode, "getHeight") * 1.5,
+      width : java.callMethodSync(displayMode, "getWidth") * 1.5
     }
 
     return screenResolution;
