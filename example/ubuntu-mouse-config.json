@@ -1,0 +1,561 @@
+{
+  "loopInterval" : 10,
+  "keyDownTime" : 200,
+  "player" : "paplay --volume=32768",
+  "audio" : {
+    "reconfigure" : "ui_reset.wav",
+    "error" : "ui_error.wav",
+    "ok" : "ui_reset.wav"
+  },
+  "pointer" : {
+    "handOffsets" : 0,
+    "minConfidence" : 0
+  },
+  "actions" : {
+    "virtualKeyboard" : {
+      "priority" : 1,
+      "blocking" : 1,
+      "pointer" : {
+        "hand" : "rightHand",
+        "focusPoint" : "palm",
+        "useFixedOrigin" : 0
+      },
+      "action" : {
+        "type" : "exec",
+        "sleepAfter" : 600,
+        "cmd" : "virtualKeyboard.sh",
+        "audioReply" : "ui_reset.wav"
+      },
+      "stepArray" : [
+        {
+          "frameData" : {
+            "leftHand" : {
+              "indexFinger" : 1,
+              "middleFinger" : 1,
+              "pinky" : 1,
+              "ringFinger" : 1,
+              "palmDirection" : "up",
+              "grabStrength" : {
+                "max" : 0.1
+              }
+            }
+          },
+          "time" : 400,
+          "timeout" : 1000
+        },
+        {
+          "frameData" : {
+            "leftHand" : {
+              "palmDirection" : "up",
+              "grabStrength" : {
+                "min" : 0.4
+              }
+            }
+          },
+          "time" : 400,
+          "timeout" : 1000
+        }
+      ]
+    },
+    "changeConfig" : {
+      "priority" : 2,
+      "blocking" : 1,
+      "action" : {
+        "type" : "exec",
+        "sleepAfter" : 2000,
+        "cmd" : "leapgim-util reconfigure ~/leapgim-conf/media-config.json",
+        "audioReply" : "ui_reset.wav"
+      },
+      "stepArray" : [
+        {
+          "frameData" : {
+            "leftHand" : {
+              "indexFinger" : 1,
+              "middleFinger" : 1,
+              "pinky" : 1,
+              "ringFinger" : 1,
+              "palmDirection" : "down",
+              "grabStrength" : {
+                "max" : 0.1
+              }
+            },
+            "circle" : {
+              "direction" : "forward",
+              "progress" : "3"
+            }
+          },
+          "time" : 500,
+          "timeout" : 100
+        }
+      ]
+    },
+    "smoothMove":{
+      "priority" : 9,
+      "continuous" : 1,
+       "pointer" : {
+        "hand" : "rightHand",
+        "focusPoint" : "palm"
+      },
+      "action":{
+        "type":"focusMove",
+        "useFixedOrigin" : 0,
+        "sensitivity" : 0.5
+      },
+      "frameData":{
+        "rightHand":{
+          "grabStrength" : {
+            "max" : 0.25
+          }
+        }
+      }
+    },
+    "mouse1Click":{
+      "priority" : 5,
+      "blocking" : 0,
+      "action":{
+        "type":"mouseClick",
+        "inputEvent":"MOUSE1",
+        "audioReply" : "ui_mouseclick.wav",
+        "sleepAfter" : 30
+      },
+      "stepArray" : [
+        {
+          "frameData" : {
+            "rightHand" : {
+              "grabStrength" : {
+                "min" : 0.6
+              },
+              "palmVelocity" : {
+                "y" : {
+                  "min" : 0
+                },
+                "z" : {
+                  "min" : 0
+                }
+              }
+            }
+          },
+          "timeout" : 200
+        },
+        {
+          "frameData" : {
+            "rightHand" : {
+              "thumb" : 0,
+              "grabStrength" : {
+                "min" : 0.6
+              },
+              "palmVelocity" : {
+                "y" : {
+                  "max" : -300
+                }
+              }
+            }
+          }
+        }   
+      ]
+    },
+    "mouse2Click":{
+      "priority" : 1,
+      "blocking" : 0,
+      "action":{
+        "type":"mouseClick",
+        "inputEvent":"MOUSE2",
+        "audioReply" : "ui_mouseclick2.wav",
+        "sleepAfter" : 100
+      },
+      "stepArray" : [
+        {
+          "frameData" : {
+            "rightHand" : {
+              "thumb" : 1,
+              "grabStrength" : {
+                "min" : 0.6
+              },
+              "palmVelocity" : {
+                "y" : {
+                  "min" : 0
+                },
+                "z" : {
+                  "min" : 0
+                }
+              }
+            }
+          },
+          "time" : 10,
+          "timeout" : 200
+        },
+        {
+          "frameData" : {
+            "rightHand" : {
+              "grabStrength" : {
+                "min" : 0.6
+              },
+              "palmVelocity" : {
+                "y" : {
+                  "max" : -300
+                }
+              }
+            }
+          }
+        }   
+      ]
+    },
+    "mouse1Hold":{
+      "priority" : 2,
+      "action":{
+        "type":"mouseDown",
+        "inputEvent":"MOUSE1",
+        "audioReply" : "ui_mousedown.wav"
+      },
+      "tearDownAction":{
+        "type":"mouseUp",
+        "inputEvent":"MOUSE1",
+        "audioReply" : "ui_mouseup.wav"
+      },
+      "frameData":{
+        "rightHand":{
+          "pinchFinger" : "indexFinger",
+          "pinchStrength" : {
+            "min" : 0.9
+          }
+        }
+      }
+    },
+    "mouseLock" : {
+      "priority" : 8,
+      "blocking" : 1,
+      "continuous" : 1,
+      "action" : {
+        "type" : "actionlist",
+        "list" : []
+      },
+      "frameData" : {
+        "rightHand" : {
+          "grabStrength" : {
+            "min" : 0.4
+          }
+        }
+      }
+    },
+    "mouseLock2" : {
+      "priority" : 6,
+      "blocking" : 1,
+      "continuous" : 1,
+      "action" : {
+        "type" : "actionlist",
+        "list" : []
+      },
+      "frameData" : {
+        "rightHand" : {
+          "pinky" : 0,
+          "indexFinger" : 1,
+          "ringFinger" : 0,
+          "middleFinger" : 0,
+          "palmDirection" : "down"
+        }
+      }
+    },
+    "showWorkspaceSwitcher" : {
+      "priority" : 1,
+      "action" : {
+        "type" : "actionlist",
+        "sleepAfter" : 500,
+        "list" : [
+          {
+            "type":"keyDown",
+            "inputEvent":"VK_META"
+          },
+          {
+            "type":"keyPress",
+            "inputEvent":"VK_S"
+          },
+          {
+            "type":"keyUp",
+            "inputEvent":"VK_META"
+          }
+
+        ]
+      },
+      "frameData" : {
+        "rightHand" : {
+          "indexFinger" : 1,
+          "middleFinger":0,
+          "pinky" : 0,
+          "ringFinger" : 0,
+          "thumb" : 1,
+          "palmDirection" : "down"
+        },
+        "swipe" : {
+          "direction" : "up"
+        }
+      },
+      "time" : 50,
+      "timeout" : 50
+    },
+    "mouseWheelUp" : {
+      "priority" : 2,
+      "blocking" : 1,
+      "action" : {
+        "type" : "mouseWheel",
+        "sleepAfter" : 300,
+        "wheelAmt" : 1
+      },
+      "frameData" : {
+        "rightHand" : {
+          "indexFinger" : 1,
+          "middleFinger" : 0,
+          "pinky" : 0,
+          "ringFinger" : 0,
+          "pointer" : "palm"
+        },
+        "circle" : {
+          "direction" : "forward",
+          "progress" : {
+            "min" : 1.5
+          }
+        }
+      },
+      "time" : 100,
+      "timeout" : 100
+    },
+    "mouseWheelDown" : {
+      "priority" : 2,
+      "blocking" : 1,
+      "action" : {
+        "type" : "mouseWheel",
+        "sleepAfter" : 300,
+        "wheelAmt" : -1
+      },
+      "frameData" : {
+        "rightHand" : {
+          "indexFinger" : 1,
+          "middleFinger" : 0,
+          "pinky" : 0,
+          "ringFinger" : 0,
+          "pointer" : "palm"
+        },
+        "circle" : {
+          "direction" : "backward",
+          "progress" : {
+            "min" : 1.5
+          }
+        }
+      },
+      "time" : 100,
+      "timeout" : 100
+    },
+    "desktopRight" : {
+      "priority" : 1,
+      "action" : {
+        "type" : "actionlist",
+        "sleepAfter" : 500,
+        "list" : [
+          {
+            "type":"keyDown",
+            "inputEvent":"VK_CONTROL"
+          },
+          {
+            "type":"keyDown",
+            "inputEvent":"VK_ALT"
+          },
+          {
+            "type":"keyPress",
+            "inputEvent":"VK_RIGHT"
+          },
+          {
+            "type":"keyUp",
+            "inputEvent":"VK_CONTROL"
+          },
+          {
+            "type":"keyUp",
+            "inputEvent":"VK_ALT"
+          }
+
+        ]
+      },
+      "frameData" : {
+        "rightHand" : {
+          "indexFinger":1,
+          "middleFinger":0,
+          "pinky" : 0,
+          "ringFinger" : 0,
+          "thumb" : 0,
+          "palmDirection" : "down"
+        },
+        "swipe" : {
+          "direction" : "right"
+        }
+      }
+    },
+    "desktopLeft" : {
+      "priority" : 1,
+      "action" : {
+        "type" : "actionlist",
+        "sleepAfter" : 500,
+        "list" : [
+          {
+            "type":"keyDown",
+            "inputEvent":"VK_CONTROL"
+          },
+          {
+            "type":"keyDown",
+            "inputEvent":"VK_ALT"
+          },
+          {
+            "type":"keyPress",
+            "inputEvent":"VK_LEFT"
+          },
+          {
+            "type":"keyUp",
+            "inputEvent":"VK_CONTROL"
+          },
+          {
+            "type":"keyUp",
+            "inputEvent":"VK_ALT"
+          }
+
+        ]
+      },
+      "frameData" : {
+        "rightHand" : {
+          "indexFinger":1,
+          "middleFinger":0,
+          "pinky" : 0,
+          "ringFinger" : 0,
+          "thumb" : 0,
+          "palmDirection" : "down"
+        },
+        "swipe" : {
+          "direction" : "left"
+        }
+      }
+    },
+    "desktopUp" : {
+      "priority" : 1,
+      "action" : {
+        "type" : "actionlist",
+        "sleepAfter" : 500,
+        "list" : [
+          {
+            "type":"keyDown",
+            "inputEvent":"VK_CONTROL"
+          },
+          {
+            "type":"keyDown",
+            "inputEvent":"VK_ALT"
+          },
+          {
+            "type":"keyPress",
+            "inputEvent":"VK_UP"
+          },
+          {
+            "type":"keyUp",
+            "inputEvent":"VK_CONTROL"
+          },
+          {
+            "type":"keyUp",
+            "inputEvent":"VK_ALT"
+          }
+
+        ]
+      },
+      "frameData" : {
+        "rightHand" : {
+          "indexFinger":1,
+          "middleFinger":0,
+          "pinky" : 0,
+          "ringFinger" : 0,
+          "thumb" : 0,
+          "palmDirection" : "down"
+        },
+        "swipe" : {
+          "direction" : "up"
+        }
+      }
+    },
+    "desktopDown" : {
+      "priority" : 1,
+      "action" : {
+        "type" : "actionlist",
+        "sleepAfter" : 500,
+        "list" : [
+          {
+            "type":"keyDown",
+            "inputEvent":"VK_CONTROL"
+          },
+          {
+            "type":"keyDown",
+            "inputEvent":"VK_ALT"
+          },
+          {
+            "type":"keyPress",
+            "inputEvent":"VK_DOWN"
+          },
+          {
+            "type":"keyUp",
+            "inputEvent":"VK_CONTROL"
+          },
+          {
+            "type":"keyUp",
+            "inputEvent":"VK_ALT"
+          }
+        ]
+      },
+      "frameData" : {
+        "rightHand" : {
+          "indexFinger":1,
+          "middleFinger":0,
+          "pinky" : 0,
+          "ringFinger" : 0,
+          "thumb" : 0,
+          "palmDirection" : "down"
+        },
+        "swipe" : {
+          "direction" : "down"
+        }
+      }
+    },
+    "pageUp" : {
+      "priority" : 3,
+      "blocking" : 0,
+      "action" : {
+        "type" : "keyPress",
+        "sleepAfter" : 300,
+        "inputEvent" : "VK_PAGE_UP"
+      },
+      "frameData" : {
+        "leftHand" : {
+          "grabStrength" : {
+            "min" : 0.6
+          },
+          "palmVelocity" : {
+            "y" : {
+              "min" : 400
+            }
+          }
+        }
+      }
+    },
+    "pageDown" : {
+      "priority" : 3,
+      "blocking" : 1,
+      "action" : {
+        "type" : "keyPress",
+        "sleepAfter" : 300,
+        "inputEvent" : "VK_PAGE_DOWN"
+      },
+      "frameData" : {
+        "leftHand" : {
+          "grabStrength" : {
+            "min" : 0.4
+          },
+          "palmVelocity" : {
+            "y" : {
+              "max" : -400
+            }
+          }
+        }
+      }
+    }
+  }
+}
