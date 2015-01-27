@@ -19,12 +19,12 @@ var args = process.argv.slice(2);
 
 var monitorMode = (args[0] == "monitor");
 if(monitorMode) {
-  if (args[1] == "gestureRecord") {
+  if (args[1] == "gestures") {
   	var monitorType = "gesture record";
   } else if (args[1] == "pointers") {
   	var monitorType = "pointers";
   } else if (args[1] == "handinfo") {
-  	var monitorType = "pointers";
+  	var monitorType = "handinfo";
   }
 }
 

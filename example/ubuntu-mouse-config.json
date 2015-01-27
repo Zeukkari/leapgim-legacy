@@ -57,38 +57,6 @@
         }
       ]
     },
-    "changeConfig" : {
-      "priority" : 2,
-      "blocking" : 1,
-      "action" : {
-        "type" : "exec",
-        "sleepAfter" : 2000,
-        "cmd" : "leapgim-util reconfigure ~/leapgim-conf/media-config.json",
-        "audioReply" : "ui_reset.wav"
-      },
-      "stepArray" : [
-        {
-          "frameData" : {
-            "leftHand" : {
-              "indexFinger" : 1,
-              "middleFinger" : 1,
-              "pinky" : 1,
-              "ringFinger" : 1,
-              "palmDirection" : "down",
-              "grabStrength" : {
-                "max" : 0.1
-              }
-            },
-            "circle" : {
-              "direction" : "forward",
-              "progress" : "3"
-            }
-          },
-          "time" : 500,
-          "timeout" : 100
-        }
-      ]
-    },
     "smoothMove":{
       "priority" : 9,
       "continuous" : 1,
@@ -98,8 +66,8 @@
       },
       "action":{
         "type":"focusMove",
-        "useFixedOrigin" : 0,
-        "sensitivity" : 0.5
+        "useFixedOrigin" : 1,
+        "sensitivity" : 0.75
       },
       "frameData":{
         "rightHand":{
@@ -140,7 +108,7 @@
         {
           "frameData" : {
             "rightHand" : {
-              "thumb" : 0,
+              "thumb" : 1,
               "grabStrength" : {
                 "min" : 0.6
               },
@@ -167,7 +135,6 @@
         {
           "frameData" : {
             "rightHand" : {
-              "thumb" : 1,
               "grabStrength" : {
                 "min" : 0.6
               },
@@ -181,17 +148,17 @@
               }
             }
           },
-          "time" : 10,
           "timeout" : 200
         },
         {
           "frameData" : {
             "rightHand" : {
+              "thumb" : 1,
               "grabStrength" : {
                 "min" : 0.6
               },
               "palmVelocity" : {
-                "y" : {
+                "z" : {
                   "max" : -300
                 }
               }
@@ -255,6 +222,24 @@
         }
       }
     },
+    "mouseLock3" : {
+      "priority" : 6,
+      "blocking" : 1,
+      "continuous" : 1,
+      "action" : {
+        "type" : "actionlist",
+        "list" : []
+      },
+      "frameData" : {
+        "rightHand" : {
+          "pinky" : 0,
+          "indexFinger" : 1,
+          "ringFinger" : 0,
+          "middleFinger" : 1,
+          "palmDirection" : "left"
+        }
+      }
+    },
     "showWorkspaceSwitcher" : {
       "priority" : 1,
       "action" : {
@@ -291,6 +276,89 @@
       },
       "time" : 50,
       "timeout" : 50
+    },
+    "controlWheelUp" : {
+      "priority" : 1,
+      "blocking" : 1,
+      "action" : {
+        "type" : "actionlist",
+        "sleepAfter" : 300,
+        "list" : [
+          {
+            "type":"keyDown",
+            "inputEvent":"VK_CONTROL"
+          },
+          {
+            "type" : "mouseWheel",
+            "sleepAfter" : 300,
+            "wheelAmt" : -1
+          },
+          {
+            "type":"keyUp",
+            "inputEvent":"VK_CONTROL"
+          }
+        ]
+      },
+      "frameData" : {
+        "rightHand" : {
+          "indexFinger" : 1,
+          "middleFinger" : 1,
+          "pinky" : 0,
+          "ringFinger" : 0,
+          "pointer" : "palm",
+          "palmDirection" : "left"
+        },
+        "circle" : {
+          "direction" : "forward",
+          "progress" : {
+            "min" : 1.5
+          }
+        }
+      },
+      "time" : 100,
+      "timeout" : 100
+
+    },
+    "controlWheelDown" : {
+      "priority" : 1,
+      "blocking" : 1,
+      "action" : {
+        "type" : "actionlist",
+        "sleepAfter" : 300,
+        "list" : [
+          {
+            "type":"keyDown",
+            "inputEvent":"VK_CONTROL"
+          },
+          {
+            "type" : "mouseWheel",
+            "sleepAfter" : 300,
+            "wheelAmt" : 1
+          },
+          {
+            "type":"keyUp",
+            "inputEvent":"VK_CONTROL"
+          }
+        ]
+      },
+      "frameData" : {
+        "rightHand" : {
+          "indexFinger" : 1,
+          "middleFinger" : 1,
+          "pinky" : 0,
+          "ringFinger" : 0,
+          "pointer" : "palm",
+          "palmDirection" : "left"
+        },
+        "circle" : {
+          "direction" : "backward",
+          "progress" : {
+            "min" : 1.5
+          }
+        }
+      },
+      "time" : 100,
+      "timeout" : 100
     },
     "mouseWheelUp" : {
       "priority" : 2,

@@ -372,10 +372,9 @@ var inputController = (function() {
     var graphicsDevice = java.callMethodSync(graphicsEnvironment, "getDefaultScreenDevice");
     var displayMode = java.callMethodSync(graphicsDevice, "getDisplayMode");
 
-    // Adjust reported resolution up to compensate for inaccurate gesture detection in the edges of the sensor's field of vision
     var screenResolution = {
-      height : java.callMethodSync(displayMode, "getHeight") * 1.5,
-      width : java.callMethodSync(displayMode, "getWidth") * 1.5
+      height : java.callMethodSync(displayMode, "getHeight"),
+      width : java.callMethodSync(displayMode, "getWidth")
     }
 
     return screenResolution;
@@ -1204,6 +1203,7 @@ var gestureController = (function(){
         pinky : "invalid",
         palmDirection : "invalid",
         pinchStrength : "invalid",
+        pinchingFinger : "invalid",
         palmVelocity : "invalid",
         sphereRadius : "invalid",
         rotation : "invalid",
@@ -1252,6 +1252,16 @@ var gestureController = (function(){
 
     var pinchStrength = hand.pinchStrength;
     data.pinchStrength = pinchStrength;
+
+    var pinchFinger = findPinchingFingerType(hand);
+
+    //console.info("pinchFinger: ", pinchFinger);
+
+    // From https://developer.leapmotion.com/documentation/javascript/api/Leap.Finger.html#id49
+    var nameMap = ["thumb", "indexFinger", "middleFinger", "ringFinger", "pinky"];
+    var fingerName = nameMap[pinchFinger.type];
+    data.pinchingFinger = fingerName;
+
 
     var palmVelocity = 'x: ' + hand.palmVelocity[0] + ', y: ' + hand.palmVelocity[1] + ", z:" + hand.palmVelocity[2];
     data.palmVelocity = palmVelocity;
