@@ -26,7 +26,7 @@
     "url" : "https://github.com/Zeukkari/leapgim.git"
   },
   "scripts": {
-    "test" : "nodeunit test/virtualKeyboard-test.js",
+    "test" : "nodeunit test",
     "start" : "forever start leapgim.js",
     "stop" : "forever stop leapgim.js"
   },
