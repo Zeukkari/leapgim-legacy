@@ -1,12 +1,15 @@
 {
   "loopInterval" : 10,
   "keyDownTime" : 200,
+  "player" : "paplay --volume=32768",
+  "audio" : {
+    "reconfigure" : "ui_reset.wav",
+    "error" : "ui_error.wav",
+    "ok" : "ui_reset.wav"
+  },
   "pointer" : {
-    "hand" : "rightHand",
-    "focusPoint" : "indexFinger",
-    "minConfidence" : 0,
     "handOffsets" : 0,
-    "useFixedOrigin" : 0
+    "minConfidence" : 0
   },
   "actions" : {
     "smoothMove":{
@@ -250,4 +253,4 @@
       }
     }
   }
-}
+} 

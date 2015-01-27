@@ -9,6 +9,7 @@ Leap = require('leapjs');
  */
 
  var path = require('path');
+ var process = require('process');
 
 
 /*
@@ -26,7 +27,7 @@ var args = process.argv.slice(2);
 if(args[0] == "-c" || args[0] == "--config") {
   var configFile = args[1];
 } else {
-  var configFile = path.join("etc", "config.json");
+  var configFile = var bin = process.env.npm_package_config_leapgim_config || "./etc/config.json";
 }
 
 /*

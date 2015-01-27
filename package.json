@@ -1,6 +1,6 @@
 {
   "name": "leapgim",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Control mouse and keybord with Leap Motion",
   "main": "leapgim.js",
   "author": "Timo Aho",
@@ -27,14 +27,14 @@
   },
   "scripts": {
     "test" : "nodeunit test",
-    "start" : "forever start leapgim.js",
-    "stop" : "forever stop leapgim.js"
+    "start" : "forever start leapgim.js && notify-send 'Leapgim started'",
+    "stop" : "forever stop leapgim.js && notify-send 'Leapgim stopped'"
   },
   "bin" : {
     "leapgim-util" : "./bin/leapgim-util",
     "leapgim" : "./bin/leapgim"
   },
-  "files" : [ "bin", "audio", "example", "www", "lib", "package.json", "README.md", "LICENSE", "leapgim.js" ],
+  "files" : [ "bin", "audio", "example", "www", "lib", "etc", "package.json", "README.md", "LICENSE", "leapgim.js" ],
   "config" : {
     "keyboardbin" : "onboard",
     "xset" : "xset",
@@ -42,6 +42,7 @@
     "tdtool" : "tdtool",
     "player" : "paplay",
     "pactl" : "pactl",
-    "xdotool" : "xdotool"
+    "xdotool" : "xdotool",
+    "leapgimconf" : "./etc/config.json"
   }
 }

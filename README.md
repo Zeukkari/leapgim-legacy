@@ -63,16 +63,19 @@ Right hand:
 
 - Mouse move: the mouse cursor will follow palm position as long as the hand is open and not on a grabbing pose ( i.e.grabStrength < 0.4 ). A grabbing pose will release the mouse cursor. Releasing the mouse cursor allowes the user to click small areas on the screen without accidentaly misplacing the cursor when performing a button click.
 - Left mouse button hold: a pinching gesture between the thumb and the index finger will hold left mouse button down. Releasing the pinch will release the mouse button.
-- Right mouse button hold: a pinching gesture between the thumb and the ring finger will hold right mouse button down. Releasing the pinch will release the mouse button.
-- Left mouse button click: pull the hand downwards with a grabbing pose sufficient for cursor release will perform a right click.
+- Right mouse button click: push the hand forward with a grabbing pose sufficient for cursor release will perform a right click. The thumb should be extended.
+- Left mouse button click: pull the hand downwards with a grabbing pose sufficient for cursor release will perform a right click. The thumb should be extended.
 - Mouse wheel: circle gesture with only the index finger extended.
+- Ctrl + mouse wheel: circle gesture with index and middle fingers extended. Palm should be facing left.
+- Desktop left/right/up/down: swipe gesture to the corresponding direction with palm facing down and only index finger is extended.
+- Ubuntu activities overview: upwards swipe gesture with the thumb and index finger extended.
 
 Notice that there are two gestures related to left clicks. The pinching gesture enables drag and drop, but is too unreliable for clicking since it's extremely easy to accidently nudge the pointer.
 
 
 
-Setup
-=====
+Ubuntu Setup
+============
 
 Prequisites
 -----------
@@ -80,12 +83,12 @@ Prequisites
 - Leap Motion v2 beta SDK
 - NodeJS
 - Java
-
+- Utilities: xset, tdtool, paplay, pactl, xdotool
 
 Installation
 ------------
 
-npm install leapgim
+npm install -g leapgim
 
 
 Notes:
@@ -93,12 +96,19 @@ Notes:
 - Keyboard and mouse input are generated with java. The node-java library installation is a bit tricky and I ran into issues on Windows and Linux. If you run into any issues see: https://github.com/joeferner/node-java
 
 
-Running
--------
+Start leapgim service:
 
-node leapgim
+npm start leapgim
 
-node leapgim --config FILE
+
+Stop leapgim service:
+
+npm stop leapgim
+
+
+Reconfigure gesture mapping:
+
+leapgim-util reconfigure --config $PWD/FILE
 
 
 Configuration
