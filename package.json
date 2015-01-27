@@ -1,6 +1,6 @@
 {
   "name": "leapgim",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Control mouse and keybord with Leap Motion",
   "main": "leapgim.js",
   "author": "Timo Aho",
@@ -31,5 +31,6 @@
   "bin" : {
     "leapgim-util" : "./bin/leapgim-util",
     "leapgim" : "./bin/leapgim"
-  }
+  },
+  "files" : [ "bin", "audio", "example", "www", "lib", "package.json", "README.md", "LICENSE", "leapgim.js" ]
 }
