@@ -36,11 +36,12 @@
     },
     "mouse1Click":{
       "priority" : 5,
-      "blocking" : 1,
+      "blocking" : 0,
       "action":{
         "type":"mouseClick",
         "inputEvent":"MOUSE1",
-        "audioReply" : "mouseclick1.mp3"
+        "audioReply" : "ui_mouseclick.wav",
+        "sleepAfter" : 30
       },
       "stepArray" : [
         {
@@ -64,6 +65,7 @@
         {
           "frameData" : {
             "rightHand" : {
+              "thumb" : 1,
               "grabStrength" : {
                 "min" : 0.6
               },
@@ -77,48 +79,68 @@
         }   
       ]
     },
+    "mouse2Click":{
+      "priority" : 1,
+      "blocking" : 0,
+      "action":{
+        "type":"mouseClick",
+        "inputEvent":"MOUSE2",
+        "audioReply" : "ui_mouseclick2.wav",
+        "sleepAfter" : 100
+      },
+      "stepArray" : [
+        {
+          "frameData" : {
+            "rightHand" : {
+              "grabStrength" : {
+                "min" : 0.6
+              },
+              "palmVelocity" : {
+                "y" : {
+                  "min" : 0
+                },
+                "z" : {
+                  "min" : 0
+                }
+              }
+            }
+          },
+          "timeout" : 200
+        },
+        {
+          "frameData" : {
+            "rightHand" : {
+              "thumb" : 1,
+              "grabStrength" : {
+                "min" : 0.6
+              },
+              "palmVelocity" : {
+                "z" : {
+                  "max" : -300
+                }
+              }
+            }
+          }
+        }   
+      ]
+    },
     "mouse1Hold":{
-      "priority" : 7,
+      "priority" : 2,
       "action":{
         "type":"mouseDown",
         "inputEvent":"MOUSE1",
-        "audioReply" : "mouseclick1.mp3"
+        "audioReply" : "ui_mousedown.wav"
       },
       "tearDownAction":{
         "type":"mouseUp",
         "inputEvent":"MOUSE1",
-        "audioReply" : "mouseclick1.mp3"
+        "audioReply" : "ui_mouseup.wav"
       },
       "frameData":{
         "rightHand":{
           "pinchFinger" : "indexFinger",
           "pinchStrength" : {
             "min" : 0.9
-          },
-          "grabStrength" : {
-            "max" : 0.9
-          }
-        }
-      }
-    },
-    "mouse2Hold":{
-      "priority" : 7,
-      "blocking" : 0,
-      "action":{
-        "type":"mouseDown",
-        "inputEvent":"MOUSE2",
-        "audioReply" : "mouseclick1.mp3"
-      },
-      "tearDownAction":{
-        "type":"mouseUp",
-        "inputEvent":"MOUSE2",
-        "audioReply" : "mouseclick1.mp3"
-      },
-      "frameData":{
-        "rightHand":{
-          "pinchFinger" : "ringFinger",
-          "pinchStrength" : {
-            "min" : 0.7
           }
         }
       }
