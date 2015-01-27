@@ -13,7 +13,9 @@
     "java" : "0.4.4",
     "forever" : "0.13.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodeunit" : "0.9.0"
+  },
   "keywords": [
     "leap",
     "leapmotion",
@@ -24,7 +26,7 @@
     "url" : "https://github.com/Zeukkari/leapgim.git"
   },
   "scripts": {
-    "util" : "bin/leapgim-util",
+    "test" : "nodeunit test/virtualKeyboard-test.js",
     "start" : "forever start leapgim.js",
     "stop" : "forever stop leapgim.js"
   },
@@ -32,5 +34,14 @@
     "leapgim-util" : "./bin/leapgim-util",
     "leapgim" : "./bin/leapgim"
   },
-  "files" : [ "bin", "audio", "example", "www", "lib", "package.json", "README.md", "LICENSE", "leapgim.js" ]
+  "files" : [ "bin", "audio", "example", "www", "lib", "package.json", "README.md", "LICENSE", "leapgim.js" ],
+  "config" : {
+    "keyboardbin" : "onboard",
+    "xset" : "xset",
+    "espeak" : "espeak",
+    "tdtool" : "tdtool",
+    "player" : "paplay",
+    "pactl" : "pactl",
+    "xdotool" : "xdotool"
+  }
 }

@@ -4,6 +4,12 @@
 
 Leap = require('leapjs');
 
+/*
+ * Path module
+ */
+
+ var path = require('path');
+
 
 /*
  * Load LeapJS hand entry plugin
@@ -20,7 +26,7 @@ var args = process.argv.slice(2);
 if(args[0] == "-c" || args[0] == "--config") {
   var configFile = args[1];
 } else {
-  var configFile = "./etc/config.json";
+  var configFile = path.join("etc", "config.json");
 }
 
 /*
@@ -149,7 +155,7 @@ var audioController = (function() {
     var player = config.player;
 
     var exec = require('child_process').exec;
-    var child = exec(player + ' ./audio/' + audioFile,
+    var child = exec(player + path.join(' audio', audioFile),
       function () {
         // ?
     });    
@@ -877,7 +883,7 @@ var gestureController = (function(){
 
       var execFile = require('child_process').exec
 
-      var child = execFile('./bin/' + cmd,
+      var child = execFile(path.join('script', cmd),
         function (error, stdout, stderr) {
           //console.log('stdout: ' + stdout);
           //console.log('stderr: ' + stderr);
