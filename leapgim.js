@@ -27,7 +27,7 @@ var args = process.argv.slice(2);
 if(args[0] == "-c" || args[0] == "--config") {
   var configFile = args[1];
 } else {
-  var configFile = var bin = process.env.npm_package_config_leapgim_config || "./etc/config.json";
+  var configFile = bin = process.env.npm_package_config_leapgim_config || "./etc/config.json";
 }
 
 /*
