@@ -11,7 +11,8 @@
     "socket.io": "1.2.1",
     "socket.io-client": "1.2.1",
     "java" : "0.4.4",
-    "forever" : "0.13.0"
+    "forever" : "0.13.0",
+    "process" : "0.11.1"
   },
   "devDependencies": {
     "nodeunit" : "0.9.0"
