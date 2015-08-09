@@ -81,7 +81,7 @@ Prequisites
 -----------
 
 - Leap Motion v2 beta SDK
-- NodeJS
+- NodeJS v0.10.29
 - Java
 - Utilities: xset, tdtool, paplay, pactl, xdotool
 
@@ -96,7 +96,7 @@ Notes:
 - Keyboard and mouse input are generated with java. The node-java library installation is a bit tricky and I ran into issues on Windows and Linux. If you run into any issues see: https://github.com/joeferner/node-java
 
 
-Start leapgim service:
+Start leapgim service (from home directory):
 
 npm start leapgim
 
