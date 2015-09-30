@@ -61,7 +61,7 @@ Left hand:
 
 Right hand:
 
-- Mouse move: the mouse cursor will follow palm position as long as the hand is open and not on a grabbing pose ( i.e.grabStrength < 0.4 ). A grabbing pose will release the mouse cursor. Releasing the mouse cursor allowes the user to click small areas on the screen without accidentaly misplacing the cursor when performing a button click.
+- Mouse move: the mouse cursor will follow palm position as long as the hand is open and not on a grabbing pose ( i.e.grabStrength < 0.4 ). A grabbing pose will release the mouse cursor. Releasing the mouse cursor allowes the user to click small areas on the screen without accidentally misplacing the cursor when performing a button click.
 - Left mouse button hold: a pinching gesture between the thumb and the index finger will hold left mouse button down. Releasing the pinch will release the mouse button.
 - Right mouse button click: push the hand forward with a grabbing pose sufficient for cursor release will perform a right click. The thumb should be extended.
 - Left mouse button click: pull the hand downwards with a grabbing pose sufficient for cursor release will perform a right click. The thumb should be extended.
